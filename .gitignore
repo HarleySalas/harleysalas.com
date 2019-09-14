@@ -1,0 +1,21 @@
+# Dependency directories
+/node_modules
+/client/node_modules
+/server/node_modules
+
+# Production
+/build
+/client/build
+
+# Environment Variables
+/client/.env.development
+/client/.env.production
+/server/.env
+.env
+
+# SSL certificate
+server/ssl/
+
+# Database Volumes
+/database/data-volume
+

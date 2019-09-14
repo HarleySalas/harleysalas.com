@@ -1,0 +1,42 @@
+version: '3.7'
+services:
+  server:
+    container_name: portfolio-server-dev
+    build:
+      context: ./server
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: development
+    links:
+      - mongo
+    volumes:
+      - ./server:/server
+  client:
+    container_name: portfolio-client-dev
+    build:
+      context: ./client
+    ports:
+      - "3002:3002"
+    volumes:
+      - ./client:/client
+  mongo:
+    image: mongo
+    container_name: portfolio-mongo-dev
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${DEV_MONGO_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${DEV_MONGO_ROOT_PASSWORD}
+      - APP_MONGO_HOST=${DEV_MONGO_HOST}
+      - MONGO_PORT=${DEV_MONGO_PORT}
+      - MONGO_ROOT_USER=${DEV_MONGO_ROOT_USERNAME}
+      - MONGO_ROOT_PASS=${DEV_MONGO_ROOT_PASSWORD}
+      - APP_MONGO_USER=${DEV_APP_MONGO_USER}
+      - APP_MONGO_PASS=${DEV_APP_MONGO_PASS}
+      - APP_MONGO_DB=${DEV_APP_MONGO_DB}
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./database/data-volume/development/:/data/db
+      - ./database/script/:/docker-entrypoint-initdb.d/
+    logging:
+      driver: none

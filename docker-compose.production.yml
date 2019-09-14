@@ -1,0 +1,31 @@
+version: '3.7'
+services:
+  app:
+    container_name: portfolio
+    build:
+      context: ./
+    restart: always
+    ports:
+      - "80:80"
+    links:
+      - mongo
+    environment:
+      NODE_ENV: production
+  mongo:
+  image: mongo
+  container_name: portfolio-mongo-prod
+  environment:
+    - MONGO_INITDB_ROOT_USERNAME=${PROD_MONGO_ROOT_USERNAME}
+    - MONGO_INITDB_ROOT_PASSWORD=${PROD_MONGO_ROOT_PASSWORD}
+    - APP_MONGO_HOST=${PROD_MONGO_HOST}
+    - MONGO_PORT=${PROD_MONGO_PORT}
+    - MONGO_ROOT_USER=${PROD_MONGO_ROOT_USERNAME}
+    - MONGO_ROOT_PASS=${PROD_MONGO_ROOT_PASSWORD}
+    - APP_MONGO_USER=${PROD_APP_MONGO_USER}
+    - APP_MONGO_PASS=${PROD_APP_MONGO_PASS}
+    - APP_MONGO_DB=${PROD_APP_MONGO_DB}
+  ports:
+    - "27017:27017"
+  volumes:
+    - ./database/data-volume/production/:/data/db
+    - ./database/script/:/docker-entrypoint-initdb.d/
